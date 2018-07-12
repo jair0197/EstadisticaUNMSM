@@ -23,25 +23,6 @@ Otras veces, uno mismo recogerá los datos. Si los datos representan alguna pobl
 3. [Uso de APIs.](#part3) 
 4. ["Scraping" tablas de datos.](#part4) 
 
-Tener en claro la ubicación de los archivos es muy importante. Crear una carpeta para los datos en nuestra máquina es la alternativa clásica, pero si es posible usar el link hacia algun repositorio puede ser más eficiente. Si los archivos están en la máquina, los siguientes comandos de R son de utilidad:
-```{r, eval=FALSE}
-getwd() # dónde estoy?
-```
-Acabas de ver donde estás, si quieres cambiar debes utilizar:
-```{r, eval=FALSE}
-setwd()
-```
-La ubicación de la carpeta que necesitas debe estar en los parentesis.
-
-Windows y Mac no describen las rutas de los directorios de la misma manera, por lo que es mejor usar el comando **file.path()**:
-```{r, eval=FALSE}
-folder="data"
-fileName="anes_timeseries_2012.sav"
-fileToRead=file.path(folder,fileName)
-```
-
-En _fileToRead_ estará la ruta correcta. Si hubiera una mayor secuencia de folders, **file.path** los concatenará sin problema.
-
 ____
 
 <a id='part1'></a>
@@ -54,10 +35,10 @@ Abramos este archivo desde el _American National Election Studies Survey_ (ANES)
 ```{r, eval=FALSE}
 #deben instalar el paquete "haven" primero! (se toma su tiempo!)
 library(foreign) 
-folder="data"
-fileName="anes_timeseries_2012.sav"
-fileToRead=file.path(folder,fileName)
-dataSpss=read.spss(fileToRead, to.data.frame=T, use.value.labels = F) 
+
+link1="https://github.com/mgbecerra/EstadisticaUNMSM/raw/master/data/anes_timeseries_2012.sav"
+
+dataSpss=read.spss(link1, to.data.frame=T, use.value.labels = F) 
 ```
 
 En **dataSpss** está un gran archivo. Además no es aun una tabla de datos (dataframe). Creemos un dataframe con dos variables ("libcpre_self","libcpo_self"), un par de preguntas  pre y post eleccions donde se solicita ubicarse en algun valor de 7 puntos, cuyos extremos son "extremandamente liberal" y "extremadamente conservador". 
@@ -70,19 +51,19 @@ head(dataSpssSub)
 
 El archivo anterior en formato STATA:
 ```{r, eval=FALSE}
-fileName="anes_timeseries_2012.dta"
-fileToRead=file.path(folder,fileName)
-dataStata=read_dta(fileToRead)
+link2="https://github.com/mgbecerra/EstadisticaUNMSM/raw/master/data/anes_timeseries_2012.dta"
+
+dataStata=read_dta(link2)
 dataStataSub=as.data.frame(dataStata)[varsOfInterest]
 head(dataStataSub)
 ```
 
 Otro formato propietario de mucho uso es el de las hojas de cálculo en Excel:
 ```{r, eval=FALSE}
+link3="https://github.com/mgbecerra/EstadisticaUNMSM/raw/master/data/idhPeru.xlsx"
+
 library(readxl) #instalen el paquete!
-fileName="idhPeru.xlsx"
-fileToRead=file.path(folder,fileName)
-dataExcel=read_excel(fileToRead)
+dataExcel=read_excel(link3)
 head(dataExcel)
 ```
 
