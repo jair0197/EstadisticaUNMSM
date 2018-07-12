@@ -1,3 +1,8 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
 
 ## Curso: Estadística 
 ### Prof. José Manuel Magallanes, PhD 
@@ -18,7 +23,7 @@ Otras veces, uno mismo recogerá los datos. Si los datos representan alguna pobl
 3. [Uso de APIs.](#part3) 
 4. ["Scraping" tablas de datos.](#part4) 
 
-Tener en claro la ubicación de los archivos es muy importante. Crear una carpeta para los datos en nuestra máquina es la alternativa clásica, pero si es posible usar el link hacia algun repositorio puede ser más eficiente. Si los archivos estarán en la máquina, los siguientes comandos de R son de utilidad:
+Tener en claro la ubicación de los archivos es muy importante. Crear una carpeta para los datos en nuestra máquina es la alternativa clásica, pero si es posible usar el link hacia algun repositorio puede ser más eficiente. Si los archivos están en la máquina, los siguientes comandos de R son de utilidad:
 ```{r, eval=FALSE}
 getwd() # dónde estoy?
 ```
@@ -39,7 +44,6 @@ En _fileToRead_ estará la ruta correcta. Si hubiera una mayor secuencia de fold
 
 ____
 
-
 <a id='part1'></a>
 
 ## Data de "proprietary software"
@@ -49,18 +53,18 @@ ____
 Abramos este archivo desde el _American National Election Studies Survey_ (ANES):
 ```{r, eval=FALSE}
 #deben instalar el paquete "haven" primero! (se toma su tiempo!)
-library(haven)
+library(foreign) 
 folder="data"
 fileName="anes_timeseries_2012.sav"
 fileToRead=file.path(folder,fileName)
-dataSpss=read_sav(fileToRead)
+dataSpss=read.spss(fileToRead, to.data.frame=T, use.value.labels = F) 
 ```
 
 En **dataSpss** está un gran archivo. Además no es aun una tabla de datos (dataframe). Creemos un dataframe con dos variables ("libcpre_self","libcpo_self"), un par de preguntas  pre y post eleccions donde se solicita ubicarse en algun valor de 7 puntos, cuyos extremos son "extremandamente liberal" y "extremadamente conservador". 
 
 ```{r, eval=FALSE}
 varsOfInterest=c("libcpre_self","libcpo_self")
-dataSpssSub=as.data.frame(dataSpss)[varsOfInterest] #convertimos en dataframe y seleccionamos variables de interés 
+dataSpssSub=dataSpss[varsOfInterest] #convertimos en dataframe y seleccionamos variables de interés 
 head(dataSpssSub)
 ```
 
