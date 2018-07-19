@@ -10,26 +10,13 @@ ____
 ## **Leyendo Data desde R**
 ____
 
-<a id='beginning'></a>
-
 El primer paso para realizar cualquier tipo de análisis es tener los datos. Esto condiciona además el diseño de la investigación.
 
 Los datos pueden estar organizados por terceros. Si es así, debemos poder leer el formato en que estén preparados. A veces los necesitamos como están, a veces hay que reformatearlos.
 
 Otras veces, uno mismo recogerá los datos. Si los datos representan alguna población en su totalidad no tendremos data sesgada; si no, habrá que hechar mano de algun proceso de muestreo. Veamos los siguientes casos:
 
-1. [Propietary software.](#part1) 
-2. [Recolección Ad-hoc.](#part2) 
-3. [Uso de APIs.](#part3) 
-4. ["Scraping" tablas de datos.](#part4) 
-
-____
-
-<a id='part1'></a>
-
-## Data de "proprietary software"
-
-*Leyendo SPSS:
+## Leyendo SPSS:
 
 Abramos este archivo desde el _American National Election Studies Survey_ (ANES):
 ```{r, eval=FALSE}
@@ -49,7 +36,8 @@ dataSpssSub=dataSpss[varsOfInterest] #convertimos en dataframe y seleccionamos v
 head(dataSpssSub)
 ```
 
-El archivo anterior en formato STATA:
+##STATA:
+
 ```{r, eval=FALSE}
 link2="https://github.com/mgbecerra/EstadisticaUNMSM/raw/master/data/anes_timeseries_2012.dta"
 
@@ -58,50 +46,18 @@ dataStataSub=as.data.frame(dataStata)[varsOfInterest]
 head(dataStataSub)
 ```
 
-Otro formato propietario de mucho uso es el de las hojas de cálculo en Excel:
-```{r, eval=FALSE}
-link3="https://github.com/mgbecerra/EstadisticaUNMSM/raw/master/data/idhPeru.xlsx"
+## Excel:
 
+```{r, eval=FALSE}
 library(readxl) #instalen el paquete!
+
+link3="https://github.com/mgbecerra/EstadisticaUNMSM/raw/master/data/idhPeruSucio.xlsx"
+
 dataExcel=read_excel(link3)
 head(dataExcel)
 ```
 
 Al ejecutar el comando anterior, verás que la data se carga pero necesita algo de organización (así la prepara Nacionaes Unidas...ni modo).
-
-[Go to page beginning](#beginning)
-
-----
-
-<a id='part2'></a>
-
-## Recolección ad-hoc
-
-Podemos muchas veces usar los formularios de Google Docs para recoger información. Por ejemplo, visite este [link](https://goo.gl/forms/Xw0um8hidWwbEPcF2). 
-
-Luego, hay que producir un URL para la data creada.
-
-```{r, eval=FALSE}
-require(RCurl) #instalen paquete! 
-# link obtenido de google docs: 
-link='https://docs.google.com/spreadsheets/d/1bDMM5s3PDC5awrSkILFRPJMlQ0j95TtVxErvvNNOHPU/pub?output=csv'
-
-# obtener info: 
-myCsv = getURL(link)
-# cambiar nombre de columnas: 
-namesOfCols=c('timeStamp','nombre','apellido','tipoCole', 'lugarNace','edad','sexo', 'religion')
-
-# formato csv: 
-myData=read.csv(textConnection(myCsv),col.names=namesOfCols)
-
-head(myData) #veamos primeras filas
-```
-
-[Go to page beginning](#beginning)
-
------
-
-<a id='part3'></a>
 
 ## Uso de los APIs
 
@@ -113,12 +69,6 @@ endPoint="https://data.seattle.gov/resource/pu5n-trf4.json"
 data911 = fromJSON(endPoint)
 head(data911)
 ```
-
-[Go to page beginning](#beginning)
-
-----
-
-<a id='part4'></a>
 
 ##"Scraping" tablas de datos
 
@@ -163,7 +113,3 @@ head(idx)
 
 Vemos que necesitamos hacer limpieza de datos! 
 
-[Go to page beginning](#beginning)
-
-_____
-<br></br>
